@@ -34,7 +34,7 @@ RUN --mount=type=cache,target=${PIP_CACHE_DIR} \
 #
 FROM python:3.11-slim-bullseye as slim-stage
 ENV DEBIAN_FRONTEND=noninteractive
-ARG ADMIN_PASSWORD=jupyterhub001
+ARG ADMIN_PASSWORD=jupyterhub002
 
 
 ARG ADMIN_USER=admin \
