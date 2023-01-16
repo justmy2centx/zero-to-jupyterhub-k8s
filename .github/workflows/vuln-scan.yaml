@@ -20,14 +20,16 @@ on:
   pull_request:
     paths:
       - ".github/workflows/vuln-scan.yaml"
+      - "images/hub/Dockerfile"
   push:
     paths:
       - ".github/workflows/vuln-scan.yaml"
+      - "images/hub/Dockerfile"
     # branches: ["main"]
     branches: ["docker-usertest"]
-  schedule:
-    # At 05:00 on Monday - https://crontab.guru
-    - cron: "0 5 * * 1"
+  # schedule:
+  #   # At 05:00 on Monday - https://crontab.guru
+  #   - cron: "0 5 * * 1"
   workflow_dispatch:
 
 jobs:
