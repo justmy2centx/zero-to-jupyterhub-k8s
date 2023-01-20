@@ -159,6 +159,7 @@ jobs:
 
       - name: Push to helm s3
         run: |
+          helm plugin install https://github.com/hypnoglow/helm-s3.git
           helm repo add private s3://helm-dev.exspanse.com/charts
           echo ${{ steps.package_helm_chart.outputs.chart-name }}-${{ steps.package_helm_chart.outputs.chart-version }}.tgz
           helm s3 push ${{ steps.package_helm_chart.outputs.chart-name }}-${{ steps.package_helm_chart.outputs.chart-version }}.tgz s3://helm-dev.exspanse.com/charts
