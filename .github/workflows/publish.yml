@@ -161,7 +161,11 @@ jobs:
         run: |
           helm plugin install https://github.com/hypnoglow/helm-s3.git
           helm repo add private s3://helm-dev.exspanse.com/charts
-          helm s3 push {{ steps.package_helm_chart.outputs.chart-name }}-{{ steps.package_helm_chart.outputs.chart-version }}.tgz s3://helm-dev.exspanse.com/charts
+          # helm s3 push {{ steps.package_helm_chart.outputs.chart-name }}-{{ steps.package_helm_chart.outputs.chart-version }}.tgz s3://helm-dev.exspanse.com/charts
+      - name: Push to S3
+        run: |
+          aws s3 cp jupyterhub-*.tgz s3://helm-dev.exspanse.com/charts/jupyterhub-${{ github.sha }}.tgz
+
 
       # ref: https://github.com/actions/upload-artifact
       - uses: actions/upload-artifact@v3
