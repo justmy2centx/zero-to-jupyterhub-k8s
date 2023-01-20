@@ -146,6 +146,29 @@ jobs:
       - name: Package helm chart as a CI artifact
         if: steps.publishing.outputs.publishing == ''
         run: helm package jupyterhub
+        outputs:
+          chart-name: ${{ steps.package_helm_chart.outputs.chart-name }}
+          chart-version: ${{ steps.package_helm_chart.outputs.chart-version }}
+
+      - name: Install AWS CLI
+        run: |
+          apt-get update
+          apt-get install -y unzip
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+
+      # - name: Package and push Helm chart to S3
+      #   run: |
+      #     helm package jupyterhub
+      #     helm s3 push <chart-name>-<chart-version>.tgz <s3-repo-name>
+
+      - name: Push to helm s3
+        run: |
+          helm repo add private  s3://helm-dev.exspanse.com/charts
+          helm package jupyterhub
+          helm repo update
+          helm s3 push ${{ steps.package_helm_chart.outputs.chart-name }}-${{ steps.package_helm_chart.outputs.chart-version }}.tgz s3://helm-dev.exspanse.com/charts
 
       # ref: https://github.com/actions/upload-artifact
       - uses: actions/upload-artifact@v3
