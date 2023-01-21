@@ -169,7 +169,7 @@ jobs:
 
       - name: Extract image tag
         run: |
-          image_tag=$(cat jupyterhub/values.yaml | grep hub.image.tag | awk '{print $2}' | tr -d "'")
+          image_tag=$(cat images/jupyterhub/values.yaml | grep hub.image.tag | awk '{print $2}' | tr -d "'")
           echo "Image tag: $image_tag"
           if [ -z "$image_tag" ] ; then echo "image_tag is empty" ; exit 1 ; fi
 
