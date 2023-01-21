@@ -134,6 +134,18 @@ jobs:
           chartpress --no-build
           ./tools/set-chart-yaml-annotations.py
 
+      - name: Login to AWS ECR
+        id: login-ecr
+        run: aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${AWS_REGION}.amazonaws.com
+  
+      - name: Build and push Docker image
+        run: |
+          TAG=${GITHUB_SHA}
+          REPO=${secrets.AWS_ECR_REPO}
+          IMAGE_NAME=${REPO}:${TAG}
+          docker build -t ${IMAGE_NAME} .
+          docker push ${IMAGE_NAME}
+
       - name: Publish images and chart with chartpress
         if: steps.publishing.outputs.publishing
         env:
