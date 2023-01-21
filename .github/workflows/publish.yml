@@ -175,19 +175,6 @@ jobs:
           docker tag $image_tag 237772076255.dkr.ecr.us-east-2.amazonaws.com/zerotojupyterhub-dev:${{ github.sha }}
           docker push 237772076255.dkr.ecr.us-east-2.amazonaws.com/zerotojupyterhub-dev:${{ github.sha }}
 
-
-      # - name: Tag image 
-      #   run: |
-      #     image_tag=$(cat jupyterhub/values.yaml | grep hub.image.tag | awk '{print $2}' | tr -d "'")
-      #     echo "Image tag: $image_tag"
-      #     docker tag $image_tag 237772076255.dkr.ecr.us-east-2.amazonaws.com/zerotojupyterhub-dev:${{ github.sha }}
-
-      # - name: Push image
-      #   run: |
-      #     # image_tag=$(cat jupyterhub/values.yaml | grep hub.image.tag | awk '{print $2}' | tr -d "'")
-      #     # echo "Image tag: $image_tag"
-      #     docker push 237772076255.dkr.ecr.us-east-2.amazonaws.com/zerotojupyterhub-dev:${{ github.sha }}
-
       - name: Publish images and chart with chartpress
         if: steps.publishing.outputs.publishing
         env:
