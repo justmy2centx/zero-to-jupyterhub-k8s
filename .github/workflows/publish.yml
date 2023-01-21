@@ -172,7 +172,7 @@ jobs:
 
       - name: Get image tag
         run: |
-          IMAGE_TAG=$(cat jupyterhub/values.yaml | yq hub.image.tag)
+          IMAGE_TAG=$(cat jupyterhub/values.yaml | yq .hub.image.tag)
           IMAGE="jupyterhub/k8s-hub:$IMAGE_TAG"
           echo "Image: $IMAGE"
 
