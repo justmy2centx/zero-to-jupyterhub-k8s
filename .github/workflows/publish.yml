@@ -172,7 +172,7 @@ jobs:
 
       - name: Get image tag
         run: |
-          IMAGE_TAG=$(yq read jupyterhub/values.yaml hub.image.tag)
+          IMAGE_TAG=$(yq get jupyterhub/values.yaml hub.image.tag)
           echo "Image tag: $IMAGE_TAG"
 
       - name: Tag and Push to ECR
