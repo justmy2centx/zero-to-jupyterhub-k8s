@@ -182,7 +182,7 @@ jobs:
         # env:
         #   AWS_REGION: us-east-2
         run: |
-          docker tag $IMAGE_TAG 237772076255.dkr.ecr.us-east-2.amazonaws.com/zerotojupyterhub-dev:${{ github.sha }}
+          docker tag $IMAGE 237772076255.dkr.ecr.us-east-2.amazonaws.com/zerotojupyterhub-dev:${{ github.sha }}
           docker push 237772076255.dkr.ecr.us-east-2.amazonaws.com/zerotojupyterhub-dev:${{ github.sha }}
 
       - name: Publish images and chart with chartpress
