@@ -148,13 +148,18 @@ jobs:
         id: login-ecr
         run: aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 237772076255.dkr.ecr.us-east-2.amazonaws.com
 
-      - name: Build and push Docker image
+      # - name: Build and push Docker image
+      #   run: |
+      #     TAG=${GITHUB_SHA}
+      #     REPO={{ secrets.AWS_ECR_REPO }}
+      #     IMAGE_NAME="${REPO}:${TAG}"
+      #     docker build -t ${IMAGE_NAME} .
+      #     docker push ${IMAGE_NAME}
+
+      - name: Build and push image
         run: |
-          TAG=${GITHUB_SHA}
-          REPO={{ secrets.AWS_ECR_REPO }}
-          IMAGE_NAME="${REPO}:${TAG}"
-          docker build -t ${IMAGE_NAME} .
-          docker push ${IMAGE_NAME}
+          docker build -t ${{ env.AWS_ECR_REPO }}:${{ github.sha }} .
+          docker push ${{ env.AWS_ECR_REPO }}:${{ github.sha }}
 
       - name: Publish images and chart with chartpress
         if: steps.publishing.outputs.publishing
