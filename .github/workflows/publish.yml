@@ -158,8 +158,8 @@ jobs:
 
       - name: Build and push image
         run: |
-          docker build -t ${{ env.AWS_ECR_REPO }}:${{ github.sha }} .
-          docker push ${{ env.AWS_ECR_REPO }}:${{ github.sha }}
+          docker build -t ${{ env.AWS_ECR_REPO }}:${{ env.SHA }} .
+          docker push ${{ env.AWS_ECR_REPO }}:${{ env.SHA }}
 
       - name: Publish images and chart with chartpress
         if: steps.publishing.outputs.publishing
