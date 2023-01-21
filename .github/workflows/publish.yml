@@ -164,6 +164,8 @@ jobs:
       - name: Print working directory
         run: pwd
 
+      - name: Print directory structure
+        run: tree
 
       - name: Extract image tag
         run: |
