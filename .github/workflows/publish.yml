@@ -162,7 +162,7 @@ jobs:
       #     docker push 237772076255.dkr.ecr.us-east-2.amazonaws.com/zerotojupyterhub-dev:${{ github.sha }}
 
       - name: Print working directory
-        run: echo "Current working directory: $(pwd)"
+        run: pwd
 
 
       - name: Extract image tag
