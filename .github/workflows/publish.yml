@@ -161,6 +161,10 @@ jobs:
       #     docker build -t 237772076255.dkr.ecr.us-east-2.amazonaws.com/zerotojupyterhub-dev:${{ github.sha }} .
       #     docker push 237772076255.dkr.ecr.us-east-2.amazonaws.com/zerotojupyterhub-dev:${{ github.sha }}
 
+      - name: Print working directory
+        run: echo "Current working directory: $(pwd)"
+
+
       - name: Extract image tag
         run: |
           image_tag=$(cat jupyterhub/values.yaml | grep hub.image.tag | awk '{print $2}' | tr -d "'")
