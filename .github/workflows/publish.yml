@@ -170,14 +170,10 @@ jobs:
       - name: Print directory structure
         run: cat jupyterhub/values.yaml
 
-      - name: Get image name and tag
+      - name: Get image tag
         run: |
-          image_name=$(cat jupyterhub/values.yaml | grep -A1 hub.image.tag | grep repository | awk '{print $2}' | tr -d "'")
-          image_tag=$(cat jupyterhub/values.yaml | grep -A1 hub.image.tag | grep tag | awk '{print $2}' | tr -d "'")
-          echo "Image name: $image_name"
-          echo "Image tag: $image_tag"
-          image_tag="$image_name:$image_tag"
-          echo "Image: $image_tag"
+          IMAGE_TAG=$(yq r jupyterhub/values.yaml hub.image.tag)
+          echo "Image tag: $IMAGE_TAG"
 
       - name: Tag and Push to ECR
         # uses: aws-actions/amazon-ecr-login@v1
