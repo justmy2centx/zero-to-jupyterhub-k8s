@@ -151,7 +151,7 @@ jobs:
       - name: Build and push Docker image
         run: |
           TAG=${GITHUB_SHA}
-          REPO=${secrets.AWS_ECR_REPO}
+          REPO={{ secrets.AWS_ECR_REPO }}
           IMAGE_NAME=${REPO}:${TAG}
           docker build -t ${IMAGE_NAME} .
           docker push ${IMAGE_NAME}
