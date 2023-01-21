@@ -168,7 +168,7 @@ jobs:
         run: tree
 
       - name: Print directory structure
-        run: cat jupyterhub/values.yaml | grep hub.image.tag
+        run: ls -ltr jupyterhub/
 
       - name: Extract image tag
         run: |
