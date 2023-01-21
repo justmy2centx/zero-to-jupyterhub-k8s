@@ -170,6 +170,18 @@ jobs:
       - name: Print directory structure
         run: cat jupyterhub/values.yaml
 
+      - name: Get image and tag from values.yaml
+        run: |
+          image=$(grep '^ *image: *name: *' jupyterhub/values.yaml | awk '{print $3}')
+          tag=$(grep '^ *image: *tag: *' jupyterhub/values.yaml | awk '{print $3}' | tr -d '"')
+          echo "Image: $image"
+          echo "Tag: $tag"
+      
+      - name: Combine image and tag to a single image:tag string
+        run: |
+          image_tag="$image:$tag"
+          echo "Image:Tag: $image_tag"
+
       - name: Extract image tag
         run: |
           image_tag=$(cat images/jupyterhub/values.yaml | grep hub.image.tag | awk '{print $2}' | tr -d "'")
