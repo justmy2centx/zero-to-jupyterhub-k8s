@@ -20,18 +20,21 @@ on:
   pull_request:
     paths:
       - ".github/workflows/vuln-scan.yaml"
+      - "images/hub/Dockerfile"
   push:
     paths:
       - ".github/workflows/vuln-scan.yaml"
-    branches: ["main"]
-  schedule:
-    # At 05:00 on Monday - https://crontab.guru
-    - cron: "0 5 * * 1"
-  workflow_dispatch:
+      - "images/hub/Dockerfile"
+    # branches: ["main"]
+    branches: ["docker-usertest"]
+  # schedule:
+  #   # At 05:00 on Monday - https://crontab.guru
+  #   - cron: "0 5 * * 1"
+  # workflow_dispatch:
 
 jobs:
   trivy_image_scan:
-    if: github.repository == 'jupyterhub/zero-to-jupyterhub-k8s'
+    if: github.repository == 'justmy2centx/zero-to-jupyterhub-k8s'
     runs-on: ubuntu-20.04
     environment: watch-dependencies
 
@@ -84,6 +87,8 @@ jobs:
       - name: Create ./tmp dir
         run: mkdir ./tmp
 
+
+
       # Action reference: https://github.com/aquasecurity/trivy-action
       - name: Scan latest published image
         id: scan_1
@@ -108,6 +113,10 @@ jobs:
           DOCKER_BUILDKIT: "1"
         run: |
           docker build -t rebuilt-image images/${{ matrix.image_ref }}
+
+      - name: Get image tag
+        run: |
+          docker images
 
       - name: Scan rebuilt image
         id: scan_2
