@@ -182,6 +182,8 @@ jobs:
         # env:
         #   AWS_REGION: us-east-2
         run: |
+          echo "Image: $IMAGE"
+          docker images
           docker tag $IMAGE 237772076255.dkr.ecr.us-east-2.amazonaws.com/zerotojupyterhub-dev:${{ github.sha }}
           docker push 237772076255.dkr.ecr.us-east-2.amazonaws.com/zerotojupyterhub-dev:${{ github.sha }}
 
