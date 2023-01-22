@@ -148,49 +148,6 @@ jobs:
         id: login-ecr
         run: aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 237772076255.dkr.ecr.us-east-2.amazonaws.com
 
-      # - name: Build and push Docker image
-      #   run: |
-      #     TAG=${GITHUB_SHA}
-      #     REPO={{ secrets.AWS_ECR_REPO }}
-      #     IMAGE_NAME="${REPO}:${TAG}"
-      #     docker build -t ${IMAGE_NAME} .
-      #     docker push ${IMAGE_NAME}
-
-      # - name: Build and push image
-      #   run: |
-      #     docker build -t 237772076255.dkr.ecr.us-east-2.amazonaws.com/zerotojupyterhub-dev:${{ github.sha }} .
-      #     docker push 237772076255.dkr.ecr.us-east-2.amazonaws.com/zerotojupyterhub-dev:${{ github.sha }}
-
-      - name: Print working directory
-        run: pwd
-
-      - name: Print directory structure
-        run: tree
-
-      - name: Print directory structure
-        run: cat jupyterhub/values.yaml
-
-      - name: Get image tag
-        run: |
-          IMAGE_TAG=$(cat jupyterhub/values.yaml | yq .hub.image.tag)
-          IMAGE="jupyterhub/k8s-hub:$IMAGE_TAG"
-          echo "Image: $IMAGE"
-          docker pull $IMAGE
-          docker images
-          docker tag $IMAGE 237772076255.dkr.ecr.us-east-2.amazonaws.com/zerotojupyterhub-dev:${{ github.sha }}
-          docker push 237772076255.dkr.ecr.us-east-2.amazonaws.com/zerotojupyterhub-dev:${{ github.sha }}
-
-
-      # - name: Tag and Push to ECR
-      #   # uses: aws-actions/amazon-ecr-login@v1
-      #   # env:
-      #   #   AWS_REGION: us-east-2
-      #   run: |
-      #     echo "Image: $IMAGE"
-      #     docker images
-      #     docker tag $IMAGE 237772076255.dkr.ecr.us-east-2.amazonaws.com/zerotojupyterhub-dev:${{ github.sha }}
-      #     docker push 237772076255.dkr.ecr.us-east-2.amazonaws.com/zerotojupyterhub-dev:${{ github.sha }}
-
       - name: Publish images and chart with chartpress
         if: steps.publishing.outputs.publishing
         env:

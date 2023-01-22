@@ -8,6 +8,14 @@
 # image that has more pre-requisites to do so, such as a C++ compiler.
 #
 FROM python:3.11-bullseye as build-stage
+# RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rustup-init.sh
+
+
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain 1.56.0
+# RUN sh rustup-init.sh -y
+ENV PATH="/root/.cargo/bin:$PATH"
+# RUN rustup install 1.56.0
+
 
 # Build wheels
 #
@@ -15,6 +23,8 @@ FROM python:3.11-bullseye as build-stage
 # ephemeral docker cache (--mount=type=cache,target=${PIP_CACHE_DIR}).
 #
 COPY requirements.txt requirements.txt
+
+RUN pip install --upgrade pip
 ARG PIP_CACHE_DIR=/tmp/pip-cache
 RUN --mount=type=cache,target=${PIP_CACHE_DIR} \
     pip install build \
@@ -35,6 +45,9 @@ RUN --mount=type=cache,target=${PIP_CACHE_DIR} \
 FROM python:3.11-slim-bullseye as slim-stage
 ENV DEBIAN_FRONTEND=noninteractive
 ARG ADMIN_PASSWORD=jupyterhub003
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    rustc \
+    cargo
 
 
 ARG ADMIN_USER=admin \
@@ -65,6 +78,8 @@ RUN apt-get update \
 
 # install wheels built in the build-stage
 COPY requirements.txt /tmp/requirements.txt
+RUN pip install --upgrade pip
+# RUN pip install rust
 ARG PIP_CACHE_DIR=/tmp/pip-cache
 RUN --mount=type=cache,target=${PIP_CACHE_DIR} \
     --mount=type=cache,from=build-stage,source=/tmp/wheels,target=/tmp/wheels \
@@ -89,6 +104,12 @@ CMD ["jupyterhub", "--config", "/usr/local/etc/jupyterhub/jupyterhub_config.py"]
 FROM slim-stage as default-stage
 
 USER root
+RUN pip install --upgrade pip
+# RUN pip install rust
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    rustc \
+    cargo
+
 
 ARG PIP_CACHE_DIR=/tmp/pip-cache
 RUN --mount=type=cache,target=${PIP_CACHE_DIR} \
