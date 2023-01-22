@@ -87,10 +87,8 @@ jobs:
       - name: Create ./tmp dir
         run: mkdir ./tmp
 
-      - name: Get image tag
-        run: |
-          docker images
-          
+
+
       # Action reference: https://github.com/aquasecurity/trivy-action
       - name: Scan latest published image
         id: scan_1
@@ -115,6 +113,10 @@ jobs:
           DOCKER_BUILDKIT: "1"
         run: |
           docker build -t rebuilt-image images/${{ matrix.image_ref }}
+
+      - name: Get image tag
+        run: |
+          docker images
 
       - name: Scan rebuilt image
         id: scan_2
