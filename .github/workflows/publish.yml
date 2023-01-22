@@ -175,17 +175,19 @@ jobs:
           IMAGE_TAG=$(cat jupyterhub/values.yaml | yq .hub.image.tag)
           IMAGE="jupyterhub/k8s-hub:$IMAGE_TAG"
           echo "Image: $IMAGE"
-
-
-      - name: Tag and Push to ECR
-        # uses: aws-actions/amazon-ecr-login@v1
-        # env:
-        #   AWS_REGION: us-east-2
-        run: |
-          echo "Image: $IMAGE"
-          docker images
-          docker tag $IMAGE 237772076255.dkr.ecr.us-east-2.amazonaws.com/zerotojupyterhub-dev:${{ github.sha }}
+          docker tag $IMAGE 237772076255.dkr.ecr.us-east-2.amazonaws.com/zerotojupyterhub-dev:${{ github.sha }
           docker push 237772076255.dkr.ecr.us-east-2.amazonaws.com/zerotojupyterhub-dev:${{ github.sha }}
+
+
+      # - name: Tag and Push to ECR
+      #   # uses: aws-actions/amazon-ecr-login@v1
+      #   # env:
+      #   #   AWS_REGION: us-east-2
+      #   run: |
+      #     echo "Image: $IMAGE"
+      #     docker images
+      #     docker tag $IMAGE 237772076255.dkr.ecr.us-east-2.amazonaws.com/zerotojupyterhub-dev:${{ github.sha }}
+      #     docker push 237772076255.dkr.ecr.us-east-2.amazonaws.com/zerotojupyterhub-dev:${{ github.sha }}
 
       - name: Publish images and chart with chartpress
         if: steps.publishing.outputs.publishing
